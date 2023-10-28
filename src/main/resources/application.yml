@@ -1,0 +1,36 @@
+# Data Source Properties
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/bio_store?useSSL=false&createDatabaseIfNotExist=true
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASSWORD:fondle}
+
+  # JPA Properties
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        defer-datasource-initialization: true
+        format_sql: true
+    hibernate:
+      ddl-auto: create-drop
+  sql:
+    init:
+      mode: never
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+
+# Logging Levels
+logging:
+  level:
+    org: WARN
+    blog: WARN
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.hibernate.type.descriptor: TRACE
+    org.springframework.security: TRACE
+
