@@ -16,7 +16,7 @@ public class UserEntity extends BaseEntity{
     private String email;
 
     @Column(name = "password", nullable = false)
-    private String password; // Hashed and salted password
+    private String password;
 
 
     @Column(name = "first_name")
