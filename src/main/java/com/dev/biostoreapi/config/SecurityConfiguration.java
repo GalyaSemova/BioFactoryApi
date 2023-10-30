@@ -28,7 +28,7 @@ public class SecurityConfiguration {
 
         return   httpSecurity.authorizeHttpRequests(
                     authorizeRequests ->authorizeRequests
-                        .requestMatchers("/api/v1", "/api/v1/users/login", "/api/v1/users/register").permitAll()
+                        .requestMatchers("/api/v1", "/api/v1/users/login", "/api/v1/users/register", "/api/v1/categories").permitAll()
                         .anyRequest().authenticated()
 
         ).build();
