@@ -10,14 +10,13 @@ import java.util.Set;
 @Table(name = "categories")
 public class CategoryEntity extends BaseEntity{
     @Enumerated(EnumType.STRING)
-    @NotBlank
     private MainCategoryNameEnum name;
     @Column
     private String description;
     @Column(name = "img_url")
     private String imgUrl;
-    @OneToMany
-    private Set<SubcategoryEntity> subcategories;
+//    @OneToMany
+//    private Set<SubcategoryEntity> subcategories;
 
     public MainCategoryNameEnum getName() {
         return name;
@@ -43,11 +42,11 @@ public class CategoryEntity extends BaseEntity{
         this.imgUrl = imgUrl;
     }
 
-    public Set<SubcategoryEntity> getSubcategories() {
-        return subcategories;
-    }
+//    public Set<SubcategoryEntity> getSubcategories() {
+//        return subcategories;
+//    }
 
-    public void setSubcategories(Set<SubcategoryEntity> subcategories) {
-        this.subcategories = subcategories;
-    }
+//    public void setSubcategories(Set<SubcategoryEntity> subcategories) {
+//        this.subcategories = subcategories;
+//    }
 }

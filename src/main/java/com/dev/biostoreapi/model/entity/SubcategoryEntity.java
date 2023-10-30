@@ -10,7 +10,6 @@ import java.util.Set;
 @Table(name = "subcategories")
 public class SubcategoryEntity extends BaseEntity{
     @Enumerated(EnumType.STRING)
-    @NotBlank
     private SubCategoryNameEnum name;
     @Column(columnDefinition = "TEXT")
     private String description;
