@@ -3,6 +3,8 @@ package com.dev.biostoreapi.model.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,6 +16,9 @@ public class UserEntity extends BaseEntity{
 
     @Column(name = "email", unique = true, nullable = false)
     private String email;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<UserRoleEntity> roles = new ArrayList<>();
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -33,8 +38,25 @@ public class UserEntity extends BaseEntity{
 
 
     @Column(name = "registration_date")
-    private LocalDate registrationDate;
+    private LocalDate registrationDate = LocalDate.now();
 
+    private boolean active;
+
+    public List<UserRoleEntity> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<UserRoleEntity> roles) {
+        this.roles = roles;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     public String getUsername() {
         return username;

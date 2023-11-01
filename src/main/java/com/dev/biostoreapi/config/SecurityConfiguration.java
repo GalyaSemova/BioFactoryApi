@@ -1,5 +1,7 @@
 package com.dev.biostoreapi.config;
 
+import com.dev.biostoreapi.repository.UserRepository;
+import com.dev.biostoreapi.service.impl.BioFactoryUserDetailsService;
 import org.springframework.boot.autoconfigure.security.reactive.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -49,6 +52,12 @@ public class SecurityConfiguration {
         return httpSecurity.build();
 
 
+    }
+    @Bean
+    public UserDetailsService userDetailsService(UserRepository userRepository) {
+//        This service translates between the biofactory users and roles
+//        to representation which spring security understands.
+        return new BioFactoryUserDetailsService(userRepository);
     }
 
     @Bean
