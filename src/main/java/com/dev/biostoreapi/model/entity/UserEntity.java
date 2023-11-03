@@ -41,6 +41,16 @@ public class UserEntity extends BaseEntity{
     private LocalDate registrationDate = LocalDate.now();
 
     private boolean active;
+    @OneToMany
+    private List<ProductEntity> products;
+
+    public List<ProductEntity> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProductEntity> products) {
+        this.products = products;
+    }
 
     public List<UserRoleEntity> getRoles() {
         return roles;

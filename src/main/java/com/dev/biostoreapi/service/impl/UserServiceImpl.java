@@ -1,5 +1,6 @@
 package com.dev.biostoreapi.service.impl;
 
+import com.dev.biostoreapi.model.dto.UserLoginDTO;
 import com.dev.biostoreapi.model.dto.UserRegistrationDTO;
 import com.dev.biostoreapi.model.entity.UserEntity;
 import com.dev.biostoreapi.model.entity.UserRoleEntity;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,7 +38,30 @@ public class UserServiceImpl implements UserService {
         user.setRoles(List.of(userRole));
         user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
         user.setRegistrationDate(LocalDate.now());
+        user.setActive(true);
+        user.setProducts(new ArrayList<>());
 
         userRepository.save(user);
+    }
+
+    @Override
+    public boolean loginUser(UserLoginDTO userLoginDTO) {
+
+        UserEntity user = this.userRepository.findByEmail(userLoginDTO.getEmail()).orElse(null);
+
+        boolean loginSuccess = false;
+        String encodedPassword = user.getPassword();
+
+        if(user != null && user.getRoles().stream()
+                .anyMatch(u -> u.getRole().equals(UserRoleEnum.USER))) {
+
+            String rawPassword = userLoginDTO.getPassword();
+
+
+            loginSuccess =  (encodedPassword != null) &&
+                   passwordEncoder.matches(rawPassword, encodedPassword);
+
+        }
+        return loginSuccess;
     }
 }
