@@ -1,23 +1,32 @@
 package com.dev.biostoreapi.model.entity;
 
 import com.dev.biostoreapi.model.enums.UserRoleEnum;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "user_roles")
-public class UserRoleEntity extends BaseEntity{
+@Table(name = "roles")
+public class UserRoleEntity{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Enumerated(EnumType.STRING)
-    private UserRoleEnum role;
+    private UserRoleEnum name;
 
-    public UserRoleEnum getRole() {
-        return role;
+    public Integer getId() {
+        return id;
     }
 
-    public void setRole(UserRoleEnum role) {
-        this.role = role;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public UserRoleEnum getName() {
+        return name;
+    }
+
+    public void setName(UserRoleEnum name) {
+        this.name = name;
     }
 }

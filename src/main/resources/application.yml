@@ -34,3 +34,7 @@ logging:
     org.hibernate.type.descriptor: TRACE
     org.springframework.security: TRACE
 
+#JWT
+jwt:
+   secret: ${SECRET_KEY:=====================================veryTopSecret====================================================================}
+

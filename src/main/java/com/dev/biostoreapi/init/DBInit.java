@@ -2,26 +2,30 @@ package com.dev.biostoreapi.init;
 
 import com.dev.biostoreapi.model.entity.CategoryEntity;
 import com.dev.biostoreapi.model.entity.SubcategoryEntity;
+import com.dev.biostoreapi.model.entity.UserRoleEntity;
 import com.dev.biostoreapi.model.enums.MainCategoryNameEnum;
 import com.dev.biostoreapi.model.enums.SubCategoryNameEnum;
+import com.dev.biostoreapi.model.enums.UserRoleEnum;
 import com.dev.biostoreapi.repository.CategoryRepository;
 import com.dev.biostoreapi.repository.SubcategoryRepository;
+import com.dev.biostoreapi.repository.UserRoleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 
 @Component
 public class DBInit implements CommandLineRunner {
 
     private final CategoryRepository categoryRepository;
     private final SubcategoryRepository subcategoryRepository;
+    private final UserRoleRepository roleRepository;
 
-    public DBInit(CategoryRepository categoryRepository, SubcategoryRepository subcategoryRepository) {
+    public DBInit(CategoryRepository categoryRepository, SubcategoryRepository subcategoryRepository, UserRoleRepository roleRepository) {
         this.categoryRepository = categoryRepository;
         this.subcategoryRepository = subcategoryRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -42,6 +46,23 @@ public class DBInit implements CommandLineRunner {
             initOthers();
             initOthersBio();
         }
+
+        if(roleRepository.count() == 0) {
+            initRoles();
+        }
+
+
+    }
+
+    private void initRoles() {
+
+        Arrays.stream(UserRoleEnum.values())
+                .forEach(roleNameEnum -> {
+                    UserRoleEntity userRoleEntity = new UserRoleEntity();
+                    userRoleEntity.setName(roleNameEnum);
+                    roleRepository.save(userRoleEntity);
+                });
+
 
     }
 

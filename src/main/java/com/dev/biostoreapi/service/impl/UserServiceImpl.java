@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registerUser(UserRegistrationDTO userRegistrationDTO) {
-        UserRoleEntity userRole = this.userRoleService.getUserRoleByEnumName(UserRoleEnum.USER);
+        UserRoleEntity userRole = this.userRoleService.getUserRoleByEnumName(UserRoleEnum.ROLE_USER);
         UserEntity user = modelMapper.map(userRegistrationDTO, UserEntity.class);
         user.setRoles(List.of(userRole));
         user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
@@ -44,24 +44,29 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+//    @Override
+//    public boolean loginUser(UserLoginDTO userLoginDTO) {
+//
+//        UserEntity user = this.userRepository.findByEmail(userLoginDTO.getEmail()).orElse(null);
+//
+//        boolean loginSuccess = false;
+//        String encodedPassword = user.getPassword();
+//
+//        if(user != null && user.getRoles().stream()
+//                .anyMatch(u -> u.getRole().equals(UserRoleEnum.USER))) {
+//
+//            String rawPassword = userLoginDTO.getPassword();
+//
+//
+//            loginSuccess =  (encodedPassword != null) &&
+//                   passwordEncoder.matches(rawPassword, encodedPassword);
+//
+//        }
+//        return loginSuccess;
+//    }
+
     @Override
-    public boolean loginUser(UserLoginDTO userLoginDTO) {
-
-        UserEntity user = this.userRepository.findByEmail(userLoginDTO.getEmail()).orElse(null);
-
-        boolean loginSuccess = false;
-        String encodedPassword = user.getPassword();
-
-        if(user != null && user.getRoles().stream()
-                .anyMatch(u -> u.getRole().equals(UserRoleEnum.USER))) {
-
-            String rawPassword = userLoginDTO.getPassword();
-
-
-            loginSuccess =  (encodedPassword != null) &&
-                   passwordEncoder.matches(rawPassword, encodedPassword);
-
-        }
-        return loginSuccess;
+    public UserEntity findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
     }
 }

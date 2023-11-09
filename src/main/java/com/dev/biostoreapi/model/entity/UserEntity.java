@@ -17,8 +17,13 @@ public class UserEntity extends BaseEntity{
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<UserRoleEntity> roles = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<UserRoleEntity> roles;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -43,6 +48,26 @@ public class UserEntity extends BaseEntity{
     private boolean active;
     @OneToMany
     private List<ProductEntity> products;
+
+    public UserEntity() {
+    }
+
+    public UserEntity(String username, String email, String password, String firstName, String lastName, String address, String phoneNumber) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
+
+//    public UserEntity(String username, String email, String password) {
+//        this.username = username;
+//        this.email = email;
+//        this.password = password;
+//    }
+
 
     public List<ProductEntity> getProducts() {
         return products;

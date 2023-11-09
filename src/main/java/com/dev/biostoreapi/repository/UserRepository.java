@@ -1,7 +1,6 @@
 package com.dev.biostoreapi.repository;
 
 import com.dev.biostoreapi.model.entity.UserEntity;
-import com.dev.biostoreapi.service.impl.BioFactoryUserDetailsService;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +12,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findById(Long id);
 
     Optional<UserEntity> findByEmail(String email);
+    Optional<UserEntity> findByUsername(String username);
+    Boolean existsByUsername(String username);
+
+    Boolean existsByEmail(String email);
 }
