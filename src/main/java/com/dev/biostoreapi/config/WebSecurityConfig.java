@@ -1,9 +1,11 @@
 package com.dev.biostoreapi.config;
 
+import com.dev.biostoreapi.model.enums.UserRoleEnum;
 import com.dev.biostoreapi.service.impl.securityImpl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -63,7 +65,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/v1/users/login", "/api/v1/users/**").permitAll()
                                 .requestMatchers("/api/v1/test/**").permitAll()
-                                .requestMatchers("/api/v1/categories").permitAll()
+                                .requestMatchers("/api/v1/categories/**").permitAll()
+                                .requestMatchers("/api/v1/products/all").permitAll()
+//                                .requestMatchers(HttpMethod.POST, "/api/v1/products/add").permitAll()
                                 .anyRequest().authenticated()
                 );
 

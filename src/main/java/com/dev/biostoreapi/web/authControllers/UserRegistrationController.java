@@ -1,7 +1,5 @@
 package com.dev.biostoreapi.web.authControllers;
 
-
-import com.dev.biostoreapi.model.dto.UserRegistrationDTO;
 import com.dev.biostoreapi.model.entity.UserEntity;
 import com.dev.biostoreapi.model.entity.UserRoleEntity;
 import com.dev.biostoreapi.model.enums.UserRoleEnum;
@@ -12,17 +10,15 @@ import com.dev.biostoreapi.repository.UserRoleRepository;
 import com.dev.biostoreapi.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-@CrossOrigin(origins = "*", maxAge = 3600)
+
+//@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/users/register")
 //@CrossOrigin("http://localhost:3000")
@@ -66,6 +62,12 @@ public ResponseEntity<?> registerUser(@Valid @RequestBody RegistrationRequest si
         return ResponseEntity
                 .badRequest()
                 .body(new MessageResponse("Error: Email is already in use!"));
+    }
+    if(!signUpRequest.getPassword().equals(signUpRequest.getConfirmPassword())) {
+        return ResponseEntity
+                .badRequest()
+                .body(new MessageResponse("Error: Passwords do not match!"));
+
     }
 
     // Create new user's account

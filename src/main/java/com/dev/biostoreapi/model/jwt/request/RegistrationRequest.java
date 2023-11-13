@@ -20,6 +20,8 @@ public class RegistrationRequest {
     @Size(min = 3)
     private String password;
 
+    public String confirmPassword;
+
     @NotBlank
     @Size(min = 2, max = 20)
     private String firstName;
@@ -39,8 +41,18 @@ public class RegistrationRequest {
         return password;
     }
 
+
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     public String getUsername() {

@@ -2,6 +2,8 @@ package com.dev.biostoreapi.service.impl;
 
 import com.dev.biostoreapi.model.dto.SubcategoryDTO;
 import com.dev.biostoreapi.model.entity.CategoryEntity;
+import com.dev.biostoreapi.model.entity.SubcategoryEntity;
+import com.dev.biostoreapi.model.enums.SubCategoryNameEnum;
 import com.dev.biostoreapi.repository.CategoryRepository;
 import com.dev.biostoreapi.repository.SubcategoryRepository;
 import com.dev.biostoreapi.service.SubcategoryService;
@@ -37,5 +39,10 @@ public class SubcategoryServiceImpl implements SubcategoryService {
                     return subcategoryDTO;
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public SubcategoryEntity findByName(SubCategoryNameEnum subcategory) {
+        return this.subcategoryRepository.findByName(subcategory);
     }
 }
