@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ProductService {
 
-    List<ProductEntity> getAllProducts();
+    List<ProductDTO> getAllProducts();
 
 //    ProductEntity save(ProductEntity productEntity);
 

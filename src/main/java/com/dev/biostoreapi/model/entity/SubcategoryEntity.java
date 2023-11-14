@@ -15,7 +15,8 @@ public class SubcategoryEntity extends BaseEntity{
     private String description;
     @Column(name = "img_url")
     private String imgUrl;
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY,
+            mappedBy = "subcategory")
     private Set<ProductEntity> products;
     @ManyToOne
     private CategoryEntity category;

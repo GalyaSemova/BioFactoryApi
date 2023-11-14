@@ -46,7 +46,8 @@ public class UserEntity extends BaseEntity{
     private LocalDate registrationDate = LocalDate.now();
 
     private boolean active;
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY,
+            mappedBy = "user")
     private List<ProductEntity> products;
 
     public UserEntity() {
@@ -156,5 +157,7 @@ public class UserEntity extends BaseEntity{
     public void setRegistrationDate(LocalDate registrationDate) {
         this.registrationDate = registrationDate;
     }
+
+
 
 }

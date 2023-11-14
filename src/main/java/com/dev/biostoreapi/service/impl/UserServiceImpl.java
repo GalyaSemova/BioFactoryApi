@@ -67,11 +67,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity findByEmail(String email) {
+
         return userRepository.findByEmail(email).orElse(null);
     }
 
     @Override
     public UserEntity findByUsername(String username) {
+
         return userRepository.findByUsername(username).orElse(null);
+    }
+
+    @Override
+    public List<UserEntity> getAllUsers() {
+
+        return userRepository.findAll();
     }
 }

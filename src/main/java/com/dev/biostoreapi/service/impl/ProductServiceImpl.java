@@ -15,7 +15,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -37,21 +39,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductEntity> getAllProducts() {
+    public List<ProductDTO> getAllProducts() {
 
-        if(productRepository.count() != 0) {
-            return this.productRepository.findAll();
-        }
+        return this.productRepository.findAll()
+                .stream()
+                .map(productEntity -> {
+                    ProductDTO productDTO = modelMapper.map(productEntity, ProductDTO.class);
+//                        UserEntity user = userService.findByEmail(productEntity.getUser().getEmail());
+                    SubcategoryEntity subcategory = subcategoryService.findByName(productEntity.getSubcategory().getName());
+                    productDTO.setSubcategory(subcategory.getName());
+                    return productDTO;
 
-        return null;
-
+                })
+                .collect(Collectors.toList());
 
     }
-
-//    @Override
-//    public ProductEntity save(ProductEntity productEntity) {
-//        return this.productRepository.save(productEntity);
-//    }
 
     @Override
 //    public ProductEntity addProduct(ProductDTO productDTO, UserEntity user) {
@@ -68,6 +70,7 @@ public class ProductServiceImpl implements ProductService {
 
 
         newProduct = productRepository.save(newProduct);
+
         return modelMapper.map(newProduct, ProductDTO.class);
     }
 }
