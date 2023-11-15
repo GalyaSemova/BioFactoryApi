@@ -65,6 +65,16 @@ public class UserLoginController {
                 userDetails.getUsername(),
                 userDetails.getEmail(),
                 roles));
+
+//        return ResponseEntity.ok(new JwtResponse(jwt,
+//                userDetails.getId(),
+//                userDetails.getUsername(),
+//                userDetails.getEmail(),
+//                roles,
+//                userDetails.getFirstName(),
+//                userDetails.getLastName(),
+//                userDetails.getPhoneNumber(),
+//                userDetails.getAddress()));
     }
 
 

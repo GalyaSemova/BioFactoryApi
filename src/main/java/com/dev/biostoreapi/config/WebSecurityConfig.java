@@ -65,8 +65,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/v1/users/login", "/api/v1/users/**").permitAll()
                                 .requestMatchers("/api/v1/test/**").permitAll()
-                                .requestMatchers("/api/v1/categories/**").permitAll()
-                                .requestMatchers("/api/v1/products/all").permitAll()
+                                .requestMatchers("/api/v1/categories/**", "/api/v1/categories/subcategories").permitAll()
+                                .requestMatchers("/api/v1/products/**").permitAll()
 //                                .requestMatchers(HttpMethod.POST, "/api/v1/products/add").permitAll()
                                 .anyRequest().authenticated()
                 );

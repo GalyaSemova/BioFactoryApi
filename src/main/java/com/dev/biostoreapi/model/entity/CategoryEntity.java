@@ -15,8 +15,8 @@ public class CategoryEntity extends BaseEntity{
     private String description;
     @Column(name = "img_url")
     private String imgUrl;
-//    @OneToMany
-//    private Set<SubcategoryEntity> subcategories;
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
+    private Set<SubcategoryEntity> subcategories;
 
     public MainCategoryNameEnum getName() {
         return name;
@@ -42,11 +42,11 @@ public class CategoryEntity extends BaseEntity{
         this.imgUrl = imgUrl;
     }
 
-//    public Set<SubcategoryEntity> getSubcategories() {
-//        return subcategories;
-//    }
+    public Set<SubcategoryEntity> getSubcategories() {
+        return subcategories;
+    }
 
-//    public void setSubcategories(Set<SubcategoryEntity> subcategories) {
-//        this.subcategories = subcategories;
-//    }
+    public void setSubcategories(Set<SubcategoryEntity> subcategories) {
+        this.subcategories = subcategories;
+    }
 }

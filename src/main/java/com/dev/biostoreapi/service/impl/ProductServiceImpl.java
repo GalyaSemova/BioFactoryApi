@@ -1,5 +1,6 @@
 package com.dev.biostoreapi.service.impl;
 
+import com.dev.biostoreapi.exceptions.ProductNotFoundException;
 import com.dev.biostoreapi.model.dto.ProductDTO;
 import com.dev.biostoreapi.model.entity.ProductEntity;
 import com.dev.biostoreapi.model.entity.SubcategoryEntity;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,6 +57,8 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+
+
     @Override
 //    public ProductEntity addProduct(ProductDTO productDTO, UserEntity user) {
     public ProductDTO addProduct(ProductDTO productDTO, UserEntity author) {
@@ -64,8 +68,8 @@ public class ProductServiceImpl implements ProductService {
         SubcategoryEntity subcategory = subcategoryService.findByName(productDTO.getSubcategory());
         newProduct.setUser(author);
 
-
         newProduct.setSubcategory(subcategory);
+
         newProduct.setDateAdded(LocalDate.now());
 
 
@@ -73,4 +77,23 @@ public class ProductServiceImpl implements ProductService {
 
         return modelMapper.map(newProduct, ProductDTO.class);
     }
+
+    @Override
+    public List<ProductDTO> getAllProductsByUser(Long userId) {
+
+        return productRepository.findAllByUser_Id(userId)
+                .stream()
+                .map(productEntity -> modelMapper.map(productEntity, ProductDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+        if(productRepository.findById(id).isPresent()) {
+            productRepository.deleteById(id);
+        } else {
+            throw new ProductNotFoundException(id);
+        }
+    }
+
 }

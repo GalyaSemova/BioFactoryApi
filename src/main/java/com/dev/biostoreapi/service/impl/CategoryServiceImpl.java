@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,8 +33,8 @@ public class CategoryServiceImpl implements CategoryService {
                 .stream()
                 .map(categoryEntity -> {
                    CategoryDTO categoryDTO =  modelMapper.map(categoryEntity, CategoryDTO.class);
-                   List<SubcategoryEntity>  subcategories = subcategoryRepository.findAllByCategory_Name(categoryEntity.getName());
-                   categoryDTO.setSubcategories(subcategories);
+//                   Set<SubcategoryEntity> subcategories = subcategoryRepository.findAllByCategory_Name(categoryEntity.getName());
+//                   categoryDTO.setSubcategories(subcategories);
                    return categoryDTO;
                 })
                 .collect(Collectors.toList());

@@ -19,6 +19,16 @@ public class SubcategoryDTO {
 
     private MainCategoryNameEnum category;
 
+    private Set<ProductEntity> products;
+
+//    public Set<ProductEntity> getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(Set<ProductEntity> products) {
+//        this.products = products;
+//    }
+
     public MainCategoryNameEnum getCategory() {
         return category;
     }

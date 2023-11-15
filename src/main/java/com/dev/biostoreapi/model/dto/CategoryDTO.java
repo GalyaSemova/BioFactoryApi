@@ -4,6 +4,7 @@ import com.dev.biostoreapi.model.entity.SubcategoryEntity;
 import com.dev.biostoreapi.model.enums.MainCategoryNameEnum;
 
 import java.util.List;
+import java.util.Set;
 
 
 public class CategoryDTO {
@@ -14,15 +15,15 @@ public class CategoryDTO {
 
     private String imgUrl;
 
-    private List<SubcategoryEntity> subcategories;
-
-    public List<SubcategoryEntity> getSubcategories() {
-        return subcategories;
-    }
-
-    public void setSubcategories(List<SubcategoryEntity> subcategories) {
-        this.subcategories = subcategories;
-    }
+//    private Set<SubcategoryEntity> subcategories;
+//
+//    public Set<SubcategoryEntity> getSubcategories() {
+//        return subcategories;
+//    }
+//
+//    public void setSubcategories(Set<SubcategoryEntity> subcategories) {
+//        this.subcategories = subcategories;
+//    }
 
     public MainCategoryNameEnum getName() {
         return name;

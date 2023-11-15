@@ -16,4 +16,10 @@ public interface ProductService {
 
 //    ProductEntity addProduct(ProductDTO productDTO, UserEntity user);
     ProductDTO addProduct(ProductDTO productDTO, UserEntity author);
+
+    List<ProductDTO> getAllProductsByUser(Long userId);
+
+    void deleteProduct(Long id);
+
+//    List<ProductEntity> findAllByUser_id(Long userId);
 }

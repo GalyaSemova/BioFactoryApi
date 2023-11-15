@@ -39,6 +39,11 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
+    @GetMapping("/{id}/all")
+    public ResponseEntity<List<ProductDTO>> getAllProductsByUser(@PathVariable("id") Long userId) {
+        return ResponseEntity.ok(productService.getAllProductsByUser(userId));
+    }
+
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
@@ -47,24 +52,21 @@ public class ProductController {
             @AuthenticationPrincipal UserDetails user) {
 
         UserEntity author = userService.findByUsername(user.getUsername());
-
-
-
-
         return
                 ResponseEntity
                         .status(HttpStatus.CREATED)
                         .body(productService.addProduct(productDTO, author));
-
-
-
-
-//        UserEntity currentUser = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-//        ProductEntity newProduct = productService.addProduct(productDTO, currentUser);
-//        productService.addProduct(productDTO);
-//        return  new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('USER')or hasRole('ADMIN')")
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id,
+                                           @AuthenticationPrincipal UserDetails user) {
+        productService.deleteProduct(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+
 
 }
 

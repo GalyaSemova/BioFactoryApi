@@ -2,6 +2,7 @@ package com.dev.biostoreapi.web;
 
 import com.dev.biostoreapi.model.entity.ProductEntity;
 import com.dev.biostoreapi.model.entity.UserEntity;
+import com.dev.biostoreapi.model.views.UserDashboardView;
 import com.dev.biostoreapi.service.UserService;
 import com.dev.biostoreapi.service.impl.securityImpl.UserDetailsServiceImpl;
 import com.dev.biostoreapi.util.JwtUtils;
@@ -31,10 +32,18 @@ public class UsersController {
         this.bioFactoryUserDetailsService = bioFactoryUserDetailsService;
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<UserEntity>> getAllProducts() {
 
-        return ResponseEntity.ok(userService.getAllUsers());
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDashboardView> getUser(@PathVariable("id") Long userId) {
+        UserDashboardView user = userService.findById(userId);
+
+        return  ResponseEntity.ok(user);
     }
+
+//    @GetMapping("/all")
+//    public ResponseEntity<List<UserEntity>> getAllProducts() {
+//
+//        return ResponseEntity.ok(userService.getAllUsers());
+//    }
 
 }

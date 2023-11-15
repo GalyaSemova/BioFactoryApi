@@ -1,10 +1,11 @@
 package com.dev.biostoreapi.service.impl;
 
-import com.dev.biostoreapi.model.dto.UserLoginDTO;
 import com.dev.biostoreapi.model.dto.UserRegistrationDTO;
 import com.dev.biostoreapi.model.entity.UserEntity;
 import com.dev.biostoreapi.model.entity.UserRoleEntity;
 import com.dev.biostoreapi.model.enums.UserRoleEnum;
+import com.dev.biostoreapi.model.views.UserDashboardView;
+import com.dev.biostoreapi.repository.ProductRepository;
 import com.dev.biostoreapi.repository.UserRepository;
 import com.dev.biostoreapi.service.UserRoleService;
 import com.dev.biostoreapi.service.UserService;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,11 +26,20 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRoleService userRoleService;
 
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder, UserRoleService userRoleService) {
+
+
+
+    public UserServiceImpl(UserRepository userRepository,
+                           ModelMapper modelMapper,
+                           PasswordEncoder passwordEncoder,
+                           UserRoleService userRoleService)
+    {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
         this.userRoleService = userRoleService;
+
+
     }
 
     @Override
@@ -44,26 +55,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-//    @Override
-//    public boolean loginUser(UserLoginDTO userLoginDTO) {
-//
-//        UserEntity user = this.userRepository.findByEmail(userLoginDTO.getEmail()).orElse(null);
-//
-//        boolean loginSuccess = false;
-//        String encodedPassword = user.getPassword();
-//
-//        if(user != null && user.getRoles().stream()
-//                .anyMatch(u -> u.getRole().equals(UserRoleEnum.USER))) {
-//
-//            String rawPassword = userLoginDTO.getPassword();
-//
-//
-//            loginSuccess =  (encodedPassword != null) &&
-//                   passwordEncoder.matches(rawPassword, encodedPassword);
-//
-//        }
-//        return loginSuccess;
-//    }
+
 
     @Override
     public UserEntity findByEmail(String email) {
@@ -78,8 +70,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserEntity> getAllUsers() {
+    public UserDashboardView findById(Long userId) {
 
-        return userRepository.findAll();
+        Optional<UserEntity> user = userRepository.findById(userId);
+
+        if(user.isPresent()) {
+            UserDashboardView userData = modelMapper.map(user, UserDashboardView.class);
+
+            return modelMapper.map(user, UserDashboardView.class);
+        }
+
+        return null;
     }
+
+//    @Override
+//    public List<UserEntity> getAllUsers() {
+//
+//        return userRepository.findAll();
+//    }
 }
