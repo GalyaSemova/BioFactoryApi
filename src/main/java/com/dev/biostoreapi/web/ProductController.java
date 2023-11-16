@@ -3,6 +3,7 @@ package com.dev.biostoreapi.web;
 import com.dev.biostoreapi.model.dto.ProductDTO;
 import com.dev.biostoreapi.model.entity.ProductEntity;
 import com.dev.biostoreapi.model.entity.UserEntity;
+import com.dev.biostoreapi.model.views.ProductView;
 import com.dev.biostoreapi.service.ProductService;
 import com.dev.biostoreapi.service.UserService;
 
@@ -65,6 +66,17 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<ProductView> editProduct(@RequestBody @Valid ProductDTO productDTO,
+                                                   @PathVariable Long id,
+                                                   @AuthenticationPrincipal UserDetails user) {
+
+        return ResponseEntity.ok()
+                .body(productService.editProduct(id, productDTO));
+    }
+
 
 
 

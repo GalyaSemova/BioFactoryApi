@@ -4,6 +4,7 @@ package com.dev.biostoreapi.service;
 import com.dev.biostoreapi.model.dto.ProductDTO;
 import com.dev.biostoreapi.model.entity.ProductEntity;
 import com.dev.biostoreapi.model.entity.UserEntity;
+import com.dev.biostoreapi.model.views.ProductView;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public interface ProductService {
     List<ProductDTO> getAllProductsByUser(Long userId);
 
     void deleteProduct(Long id);
+
+    ProductView  editProduct(Long id, ProductDTO productDTO);
 
 //    List<ProductEntity> findAllByUser_id(Long userId);
 }

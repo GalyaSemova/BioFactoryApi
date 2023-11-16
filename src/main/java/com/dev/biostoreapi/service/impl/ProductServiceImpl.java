@@ -5,6 +5,7 @@ import com.dev.biostoreapi.model.dto.ProductDTO;
 import com.dev.biostoreapi.model.entity.ProductEntity;
 import com.dev.biostoreapi.model.entity.SubcategoryEntity;
 import com.dev.biostoreapi.model.entity.UserEntity;
+import com.dev.biostoreapi.model.views.ProductView;
 import com.dev.biostoreapi.repository.ProductRepository;
 import com.dev.biostoreapi.service.ProductService;
 import com.dev.biostoreapi.service.SubcategoryService;
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -94,6 +96,38 @@ public class ProductServiceImpl implements ProductService {
         } else {
             throw new ProductNotFoundException(id);
         }
+    }
+
+    @Override
+    public ProductView editProduct(Long id, ProductDTO productDTO) {
+        ProductEntity productToEdit = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
+
+        UserEntity user = productToEdit.getUser();
+        SubcategoryEntity subcategory = subcategoryService.findByName(productDTO.getSubcategory());
+
+        ProductEntity productReference = modelMapper.map(productDTO, ProductEntity.class);
+        productReference.setUser(user);
+        productReference.setSubcategory(subcategory);
+
+
+        if (!productReference.equals(productToEdit)) {
+            productToEdit.setSubcategory(productReference.getSubcategory());
+            productToEdit.setName(productReference.getName());
+            productToEdit.setDescription(productReference.getDescription());
+            productToEdit.setImageUrl(productReference.getImageUrl());
+            productToEdit.setQuantityAvailable(productReference.getQuantityAvailable());
+            productToEdit.setPrice(productReference.getPrice());
+
+            ProductEntity editedProduct = productRepository.save(productToEdit);
+            ProductView productView = modelMapper.map(editedProduct, ProductView.class);
+            productView.setLastEdited(LocalDateTime.now());
+            productView.setSubcategory(editedProduct.getSubcategory().getName());
+            return productView;
+        }
+
+
+        return modelMapper.map(productToEdit, ProductView.class);
     }
 
 }

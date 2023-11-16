@@ -1,11 +1,11 @@
-package com.dev.biostoreapi.model.dto;
+package com.dev.biostoreapi.model.views;
 
 import com.dev.biostoreapi.model.enums.SubCategoryNameEnum;
-import com.dev.biostoreapi.model.jwt.response.JwtResponse;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
-public class ProductDTO {
+public class ProductView {
 
     private Long id;
     private String name;
@@ -15,8 +15,7 @@ public class ProductDTO {
     private int quantityAvailable;
     private String imageUrl;
 
-//    private String authorEmail;
-
+    private LocalDateTime lastEdited;
 
     public Long getId() {
         return id;
@@ -74,12 +73,11 @@ public class ProductDTO {
         this.imageUrl = imageUrl;
     }
 
-//    public String getAuthorEmail() {
-//        return authorEmail;
-//    }
-//
-//    public void setAuthorEmail(String authorEmail) {
-//        this.authorEmail = authorEmail;
-//    }
-}
+    public LocalDateTime getLastEdited() {
+        return lastEdited;
+    }
 
+    public void setLastEdited(LocalDateTime lastEdited) {
+        this.lastEdited = lastEdited;
+    }
+}
