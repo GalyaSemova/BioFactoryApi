@@ -1,5 +1,6 @@
 package com.dev.biostoreapi.service.impl;
 
+import com.dev.biostoreapi.config.LocalDateProvider;
 import com.dev.biostoreapi.exceptions.ProductNotFoundException;
 import com.dev.biostoreapi.model.dto.ProductDTO;
 import com.dev.biostoreapi.model.entity.ProductEntity;
@@ -10,17 +11,14 @@ import com.dev.biostoreapi.repository.ProductRepository;
 import com.dev.biostoreapi.service.ProductService;
 import com.dev.biostoreapi.service.SubcategoryService;
 import com.dev.biostoreapi.service.UserService;
-import com.dev.biostoreapi.service.impl.securityImpl.UserDetailsImpl;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,12 +32,18 @@ public class ProductServiceImpl implements ProductService {
 //    @Autowired
 //    private UserDetailsImpl userDetails;
 
+    private final LocalDateProvider localDateProvider;
 
-    public ProductServiceImpl(ProductRepository productRepository, UserService userService, SubcategoryService subcategoryService, ModelMapper modelMapper) {
+
+    public ProductServiceImpl(ProductRepository productRepository, UserService userService, SubcategoryService subcategoryService, ModelMapper modelMapper,
+                              LocalDateProvider localDateProvider) {
         this.productRepository = productRepository;
         this.userService = userService;
         this.subcategoryService = subcategoryService;
         this.modelMapper = modelMapper;
+        this.localDateProvider = localDateProvider;
+
+
     }
 
     @Override
@@ -72,12 +76,15 @@ public class ProductServiceImpl implements ProductService {
 
         newProduct.setSubcategory(subcategory);
 
-        newProduct.setDateAdded(LocalDate.now());
+//        newProduct.setDateAdded(LocalDate.now());
+        newProduct.setDateAdded(localDateProvider.now());
 
 
         newProduct = productRepository.save(newProduct);
+        ProductDTO addedProduct = modelMapper.map(newProduct, ProductDTO.class);
+        addedProduct.setSubcategory(subcategory.getName());
 
-        return modelMapper.map(newProduct, ProductDTO.class);
+        return addedProduct;
     }
 
     @Override
@@ -129,5 +136,6 @@ public class ProductServiceImpl implements ProductService {
 
         return modelMapper.map(productToEdit, ProductView.class);
     }
+
 
 }
