@@ -1,5 +1,6 @@
 package com.dev.biostoreapi.web.authControllers;
 
+import com.dev.biostoreapi.config.LocalDateProvider;
 import com.dev.biostoreapi.model.entity.UserEntity;
 import com.dev.biostoreapi.model.entity.UserRoleEntity;
 import com.dev.biostoreapi.model.enums.UserRoleEnum;
@@ -12,11 +13,16 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -34,6 +40,8 @@ public class UserRegistrationController {
 
     @Autowired
     UserRoleRepository roleRepository;
+    @Autowired
+    private LocalDateProvider localDateProvider;
 
     public UserRegistrationController(UserService userService) {
         this.userService = userService;
@@ -41,17 +49,23 @@ public class UserRegistrationController {
 
     @GetMapping
     public ResponseEntity<String> getRegister() {
+
         return ResponseEntity.ok("Welcome to the registration page");
     }
 
-//    @PostMapping
-//    public ResponseEntity<String> postRegister(@RequestBody UserRegistrationDTO userRegistrationDTO) {
-//        userService.registerUser(userRegistrationDTO);
-//
-//        return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
-//    }
 @PostMapping
-public ResponseEntity<?> registerUser(@Valid @RequestBody RegistrationRequest signUpRequest) {
+public ResponseEntity<?> registerUser(@Valid @RequestBody RegistrationRequest signUpRequest,
+                                      BindingResult bindingResult) {
+
+    if (bindingResult.hasErrors()) {
+        Map<String, String> validationErrors = new HashMap<>();
+        for (FieldError error : bindingResult.getFieldErrors()) {
+            validationErrors.put(error.getField(), error.getDefaultMessage());
+        }
+        return ResponseEntity.badRequest().body(validationErrors);
+    }
+
+
     if (userRepository.existsByUsername(signUpRequest.getUsername())) {
         return ResponseEntity
                 .badRequest()
@@ -81,7 +95,7 @@ public ResponseEntity<?> registerUser(@Valid @RequestBody RegistrationRequest si
             signUpRequest.getPhoneNumber()
     );
 
-    user.setRegistrationDate(LocalDate.now());
+    user.setRegistrationDate(localDateProvider.now());
     user.setProducts(new ArrayList<>());
     user.setActive(true);
 
@@ -118,6 +132,7 @@ public ResponseEntity<?> registerUser(@Valid @RequestBody RegistrationRequest si
     user.setRoles(roles);
     userRepository.save(user);
 
+//    return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 }
 }

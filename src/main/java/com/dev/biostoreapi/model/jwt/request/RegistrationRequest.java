@@ -8,31 +8,30 @@ import java.util.List;
 
 
 public class RegistrationRequest {
-    @NotBlank
-    @Size(min = 4, max = 30)
+    @NotBlank(message = "Username is required")
+    @Size(min = 4, max = 30, message = "Username must be between 4 and 30 characters")
     private String username;
 
-    @NotBlank
-    @Size
-    @Email
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
     private String email;
 
-    @Size(min = 3)
+    @Size(min = 3, message = "Password must be at least 3 characters")
     private String password;
-
+    @NotBlank(message = "Confirm Password is required")
     public String confirmPassword;
 
-    @NotBlank
+    @NotBlank(message = "First Name is required")
     @Size(min = 2, max = 20)
     private String firstName;
 
-    @NotBlank
+    @NotBlank(message = "Last Name is required")
     private String lastName;
 
     private String address;
 
-    @NotBlank
-    @Size(min = 10, max = 15)
+    @NotBlank(message = "Phone Number is required")
+    @Size(min = 10, max = 15, message = "Phone number must be between 10 and 15 digits")
     private String phoneNumber;
 
     private List<String> role;
