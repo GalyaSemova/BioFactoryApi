@@ -15,11 +15,15 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -48,9 +52,18 @@ public class ProductController {
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<ProductDTO> addProduct(
+    public ResponseEntity<?> addProduct(
             @RequestBody @Valid ProductDTO productDTO,
+            BindingResult bindingResult,
             @AuthenticationPrincipal UserDetails user) {
+
+        if (bindingResult.hasErrors()) {
+            Map<String, String> validationErrors = new HashMap<>();
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                validationErrors.put(error.getField(), error.getDefaultMessage());
+            }
+            return ResponseEntity.badRequest().body(validationErrors);
+        }
 
         UserEntity author = userService.findByUsername(user.getUsername());
         return

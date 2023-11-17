@@ -2,16 +2,25 @@ package com.dev.biostoreapi.model.dto;
 
 import com.dev.biostoreapi.model.enums.SubCategoryNameEnum;
 import com.dev.biostoreapi.model.jwt.response.JwtResponse;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;
 
 public class ProductDTO {
 
     private Long id;
+    @NotBlank(message = "Name cannot be blank")
     private String name;
     private String description;
+    @NotNull(message = "Subcategory cannot be null")
     private SubCategoryNameEnum subcategory;
+    @NotNull(message = "Price cannot be null")
+    @Positive(message = "Price must be a positive number")
     private BigDecimal price;
+    @PositiveOrZero(message = "Quantity available must be a positive number or zero")
     private int quantityAvailable;
     private String imageUrl;
 
