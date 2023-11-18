@@ -57,11 +57,14 @@ public class UserRegistrationController {
 public ResponseEntity<?> registerUser(@Valid @RequestBody RegistrationRequest signUpRequest,
                                       BindingResult bindingResult) {
 
+
     if (bindingResult.hasErrors()) {
         Map<String, String> validationErrors = new HashMap<>();
         for (FieldError error : bindingResult.getFieldErrors()) {
             validationErrors.put(error.getField(), error.getDefaultMessage());
         }
+
+
         return ResponseEntity.badRequest().body(validationErrors);
     }
 
@@ -83,6 +86,12 @@ public ResponseEntity<?> registerUser(@Valid @RequestBody RegistrationRequest si
                 .body(new MessageResponse("Error: Passwords do not match!"));
 
     }
+
+//    if(!validationErrors.isEmpty()) {
+//        return ResponseEntity
+//                .badRequest()
+//                .body(new MessageResponse("Please make sure all the fields are filled correctly!"));
+//    }
 
     // Create new user's account
     UserEntity user = new UserEntity(

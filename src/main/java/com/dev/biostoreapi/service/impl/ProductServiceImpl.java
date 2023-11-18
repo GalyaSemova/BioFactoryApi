@@ -92,7 +92,13 @@ public class ProductServiceImpl implements ProductService {
 
         return productRepository.findAllByUser_Id(userId)
                 .stream()
-                .map(productEntity -> modelMapper.map(productEntity, ProductDTO.class))
+                .map(productEntity -> {
+                    SubcategoryEntity subcategory = subcategoryService.findByName(productEntity.getSubcategory().getName());
+                    ProductDTO productDTO = modelMapper.map(productEntity, ProductDTO.class);
+                    productDTO.setSubcategory(subcategory.getName());
+
+                    return productDTO;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -110,8 +116,11 @@ public class ProductServiceImpl implements ProductService {
         ProductEntity productToEdit = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
 
+//        TODO fix the bug. There is a problem with subcategory transfer change with productEditDTO
+
         UserEntity user = productToEdit.getUser();
         SubcategoryEntity subcategory = subcategoryService.findByName(productDTO.getSubcategory());
+
 
         ProductEntity productReference = modelMapper.map(productDTO, ProductEntity.class);
         productReference.setUser(user);

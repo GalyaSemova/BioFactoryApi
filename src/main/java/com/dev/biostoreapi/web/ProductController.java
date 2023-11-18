@@ -82,9 +82,19 @@ public class ProductController {
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<ProductView> editProduct(@RequestBody @Valid ProductDTO productDTO,
+    public ResponseEntity<?> editProduct(@RequestBody @Valid ProductDTO productDTO,
+                                                   BindingResult bindingResult,
                                                    @PathVariable Long id,
                                                    @AuthenticationPrincipal UserDetails user) {
+
+
+        if (bindingResult.hasErrors()) {
+            Map<String, String> validationErrors = new HashMap<>();
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                validationErrors.put(error.getField(), error.getDefaultMessage());
+            }
+            return ResponseEntity.badRequest().body(validationErrors);
+        }
 
         return ResponseEntity.ok()
                 .body(productService.editProduct(id, productDTO));
