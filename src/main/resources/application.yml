@@ -2,7 +2,7 @@
 spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/bio_store?useSSL=false&createDatabaseIfNotExist=true
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/bio_store?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
     username: ${MYSQL_USER:root}
     password: ${MYSQL_PASSWORD:fondle}
 

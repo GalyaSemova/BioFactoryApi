@@ -6,6 +6,7 @@ import com.dev.biostoreapi.model.dto.ProductDTO;
 import com.dev.biostoreapi.model.entity.ProductEntity;
 import com.dev.biostoreapi.model.entity.SubcategoryEntity;
 import com.dev.biostoreapi.model.entity.UserEntity;
+import com.dev.biostoreapi.model.enums.SubCategoryNameEnum;
 import com.dev.biostoreapi.model.views.ProductView;
 import com.dev.biostoreapi.repository.ProductRepository;
 import com.dev.biostoreapi.service.ProductService;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -116,8 +118,6 @@ public class ProductServiceImpl implements ProductService {
         ProductEntity productToEdit = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
 
-//        TODO fix the bug. There is a problem with subcategory transfer change with productEditDTO
-
         UserEntity user = productToEdit.getUser();
         SubcategoryEntity subcategory = subcategoryService.findByName(productDTO.getSubcategory());
 
@@ -146,5 +146,18 @@ public class ProductServiceImpl implements ProductService {
         return modelMapper.map(productToEdit, ProductView.class);
     }
 
+    @Override
+    public Set<ProductView> getAllProductsBySubcategory(SubCategoryNameEnum subCategoryNameEnum) {
 
+        return productRepository.findAllBySubcategory_Name(subCategoryNameEnum)
+                .stream()
+                .map(productEntity -> {
+
+                    ProductView productView = modelMapper.map(productEntity, ProductView.class);
+                    productView.setSubcategory(subCategoryNameEnum);
+
+                    return productView;
+                })
+                .collect(Collectors.toSet());
+    }
 }

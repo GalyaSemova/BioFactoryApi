@@ -3,6 +3,7 @@ package com.dev.biostoreapi.web;
 import com.dev.biostoreapi.model.dto.ProductDTO;
 import com.dev.biostoreapi.model.entity.ProductEntity;
 import com.dev.biostoreapi.model.entity.UserEntity;
+import com.dev.biostoreapi.model.enums.SubCategoryNameEnum;
 import com.dev.biostoreapi.model.views.ProductView;
 import com.dev.biostoreapi.service.ProductService;
 import com.dev.biostoreapi.service.UserService;
@@ -24,6 +25,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -42,6 +44,11 @@ public class ProductController {
     @GetMapping("/all")
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
+    }
+
+    @GetMapping("/{subcategory}")
+    public ResponseEntity<Set<ProductView>> getAllProductsBySubcategoryName(@PathVariable("subcategory")SubCategoryNameEnum subCategoryNameEnum) {
+        return ResponseEntity.ok(productService.getAllProductsBySubcategory(subCategoryNameEnum));
     }
 
     @GetMapping("/{id}/all")
