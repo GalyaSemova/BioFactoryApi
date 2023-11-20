@@ -5,6 +5,7 @@ import com.dev.biostoreapi.model.entity.ProductEntity;
 import com.dev.biostoreapi.model.entity.UserEntity;
 import com.dev.biostoreapi.model.enums.SubCategoryNameEnum;
 import com.dev.biostoreapi.model.views.ProductView;
+import com.dev.biostoreapi.model.views.ProductViewProductPage;
 import com.dev.biostoreapi.service.ProductService;
 import com.dev.biostoreapi.service.UserService;
 
@@ -47,9 +48,15 @@ public class ProductController {
     }
 
     @GetMapping("/{subcategory}")
-    public ResponseEntity<Set<ProductView>> getAllProductsBySubcategoryName(@PathVariable("subcategory")SubCategoryNameEnum subCategoryNameEnum) {
+    public ResponseEntity<Set<ProductViewProductPage>> getAllProductsBySubcategoryName(
+            @PathVariable("subcategory")SubCategoryNameEnum subCategoryNameEnum) {
         return ResponseEntity.ok(productService.getAllProductsBySubcategory(subCategoryNameEnum));
     }
+
+    @GetMapping("/details/{id}")
+    public ResponseEntity<ProductViewProductPage> getProductDataById(@PathVariable("id") Long productId) {
+        return ResponseEntity.ok(productService.getProductById(productId));
+  }
 
     @GetMapping("/{id}/all")
     public ResponseEntity<List<ProductDTO>> getAllProductsByUser(@PathVariable("id") Long userId) {

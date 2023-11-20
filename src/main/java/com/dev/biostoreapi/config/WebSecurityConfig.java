@@ -66,7 +66,7 @@ public class WebSecurityConfig {
                         auth.requestMatchers("/api/v1/users/login", "/api/v1/users/**").permitAll()
                                 .requestMatchers("/api/v1/test/**").permitAll()
                                 .requestMatchers("/api/v1/categories/**", "/api/v1/categories/subcategories").permitAll()
-                                .requestMatchers("/api/v1/products/**").permitAll()
+                                .requestMatchers("/api/v1/products/**", "/api/v1/products/details/**").permitAll()
 //                                .requestMatchers(HttpMethod.POST, "/api/v1/products/add").permitAll()
                                 .anyRequest().authenticated()
                 );

@@ -8,6 +8,7 @@ import com.dev.biostoreapi.model.entity.SubcategoryEntity;
 import com.dev.biostoreapi.model.entity.UserEntity;
 import com.dev.biostoreapi.model.enums.SubCategoryNameEnum;
 import com.dev.biostoreapi.model.views.ProductView;
+import com.dev.biostoreapi.model.views.ProductViewProductPage;
 import com.dev.biostoreapi.repository.ProductRepository;
 import com.dev.biostoreapi.service.ProductService;
 import com.dev.biostoreapi.service.SubcategoryService;
@@ -145,19 +146,31 @@ public class ProductServiceImpl implements ProductService {
 
         return modelMapper.map(productToEdit, ProductView.class);
     }
-
+//    TODO implement on Products.js page. This endpoint works
     @Override
-    public Set<ProductView> getAllProductsBySubcategory(SubCategoryNameEnum subCategoryNameEnum) {
+    public Set<ProductViewProductPage> getAllProductsBySubcategory(SubCategoryNameEnum subCategoryNameEnum) {
 
         return productRepository.findAllBySubcategory_Name(subCategoryNameEnum)
                 .stream()
                 .map(productEntity -> {
-
-                    ProductView productView = modelMapper.map(productEntity, ProductView.class);
-                    productView.setSubcategory(subCategoryNameEnum);
+                    SubcategoryEntity subcategory = subcategoryService.findByName(subCategoryNameEnum);
+                    ProductViewProductPage productView = modelMapper.map(productEntity, ProductViewProductPage.class);
+                    productView.setSubcategory(subcategory.getName());
 
                     return productView;
                 })
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public ProductViewProductPage getProductById(Long id) {
+       ProductEntity productEntity =  productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
+
+        SubcategoryEntity subcategory = subcategoryService.findByName(productEntity.getSubcategory().getName());
+        ProductViewProductPage product = modelMapper.map(productEntity, ProductViewProductPage.class);
+        product.setSubcategory(subcategory.getName());
+
+        return product;
     }
 }

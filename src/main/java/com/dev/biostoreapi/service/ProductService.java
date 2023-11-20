@@ -6,7 +6,7 @@ import com.dev.biostoreapi.model.entity.ProductEntity;
 import com.dev.biostoreapi.model.entity.UserEntity;
 import com.dev.biostoreapi.model.enums.SubCategoryNameEnum;
 import com.dev.biostoreapi.model.views.ProductView;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.dev.biostoreapi.model.views.ProductViewProductPage;
 
 import java.util.List;
 import java.util.Set;
@@ -26,7 +26,9 @@ public interface ProductService {
 
     ProductView  editProduct(Long id, ProductDTO productDTO);
 
-    Set<ProductView> getAllProductsBySubcategory(SubCategoryNameEnum subCategoryNameEnum);
+    Set<ProductViewProductPage> getAllProductsBySubcategory(SubCategoryNameEnum subCategoryNameEnum);
+
+    ProductViewProductPage getProductById(Long id);
 
 //    List<ProductEntity> findAllByUser_id(Long userId);
 }
