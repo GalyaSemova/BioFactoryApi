@@ -146,7 +146,7 @@ public class ProductServiceImpl implements ProductService {
 
         return modelMapper.map(productToEdit, ProductView.class);
     }
-//    TODO implement on Products.js page. This endpoint works
+
     @Override
     public Set<ProductViewProductPage> getAllProductsBySubcategory(SubCategoryNameEnum subCategoryNameEnum) {
 

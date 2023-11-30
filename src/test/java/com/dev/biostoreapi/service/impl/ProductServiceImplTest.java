@@ -7,16 +7,19 @@ import com.dev.biostoreapi.model.enums.MainCategoryNameEnum;
 import com.dev.biostoreapi.model.enums.SubCategoryNameEnum;
 import com.dev.biostoreapi.model.enums.UserRoleEnum;
 import com.dev.biostoreapi.repository.ProductRepository;
+import com.dev.biostoreapi.repository.SubcategoryRepository;
 import com.dev.biostoreapi.service.SubcategoryService;
 import com.dev.biostoreapi.service.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Role;
 import org.springframework.context.support.BeanDefinitionDsl;
 
@@ -36,6 +39,7 @@ public class ProductServiceImplTest {
 
     @Mock
     private ProductRepository mockProductRepository;
+
     @Mock
     private UserService mockUserService;
     @Mock
@@ -52,6 +56,8 @@ public class ProductServiceImplTest {
     @Mock
     private LocalDateProvider mockLocalDateProvider;
 
+    private SubcategoryRepository subcategoryRepository;
+
     @BeforeEach
     void setUp() {
         serviceToTest = new ProductServiceImpl(
@@ -66,12 +72,13 @@ public class ProductServiceImplTest {
         testProductDTO = new ProductDTO() {
             {
                 setId(1L);
-              setName("Test Prooduct");
+              setName("Test Product");
               setDescription("Description");
               setPrice(BigDecimal.TEN);
               setQuantityAvailable(5);
               setImageUrl("test-image-url");
-              setSubcategory(createSubcategoryEntity().getName());
+//              setSubcategory(createSubcategoryEntity().getName());
+                setSubcategory(SubCategoryNameEnum.HANDBAGS);
             }
         };
         testProductEntity = new ProductEntity() {
@@ -81,9 +88,9 @@ public class ProductServiceImplTest {
                 setPrice(BigDecimal.TEN);
                 setQuantityAvailable(5);
                 setImageUrl("test-image-url");
-                setSubcategory(createSubcategoryEntity());
+                setSubcategory(createSubcategoryEntity(SubCategoryNameEnum.HANDBAGS));
                 setDateAdded(mockLocalDateProvider.now());
-                setUser(createUserEntity());
+//                setUser(createUserEntity());
             }
         };
         // Mock the necessary repository and service behavior
@@ -97,17 +104,42 @@ public class ProductServiceImplTest {
     @Test
     public void testAddProduct() {
         UserEntity user = createUserEntity();
+        testProductDTO.setSubcategory(SubCategoryNameEnum.HANDBAGS);
+
         serviceToTest.addProduct(testProductDTO, user);
         when(mockProductRepository.save(Mockito.any(ProductEntity.class))).thenReturn(testProductEntity);
 
 
 
-    }
 
-    private static SubcategoryEntity createSubcategoryEntity() {
+    }
+//@Test
+//public void testAddProduct() {
+//    // Given
+//    UserEntity user = createUserEntity();
+//
+//    // When
+//    serviceToTest.addProduct(testProductDTO, user);
+//
+//    // Then
+//    ArgumentCaptor<ProductEntity> productEntityCaptor = ArgumentCaptor.forClass(ProductEntity.class);
+//    Mockito.verify(mockProductRepository).save(productEntityCaptor.capture());
+//
+//    ProductEntity capturedProductEntity = productEntityCaptor.getValue();
+//    Assertions.assertEquals(testProductDTO.getName(), capturedProductEntity.getName());
+//    Assertions.assertEquals(testProductDTO.getDescription(), capturedProductEntity.getDescription());
+//    Assertions.assertEquals(testProductDTO.getPrice(), capturedProductEntity.getPrice());
+//    Assertions.assertEquals(testProductDTO.getQuantityAvailable(), capturedProductEntity.getQuantityAvailable());
+//    Assertions.assertEquals(testProductDTO.getImageUrl(), capturedProductEntity.getImageUrl());
+//    Assertions.assertEquals(testProductDTO.getSubcategory(), capturedProductEntity.getSubcategory().getName());
+//    // Add more assertions based on your entity properties
+//}
+
+    private static SubcategoryEntity createSubcategoryEntity(SubCategoryNameEnum name) {
         SubcategoryEntity subcategoryEntity = new SubcategoryEntity();
         subcategoryEntity.setId(1L);
-        subcategoryEntity.setName(SubCategoryNameEnum.HANDBAGS);
+//        subcategoryEntity.setName(SubCategoryNameEnum.HANDBAGS);
+        subcategoryEntity.setName(name);
 
         CategoryEntity category1 = new CategoryEntity();
         category1.setId(1L);
