@@ -15,6 +15,9 @@ import com.dev.biostoreapi.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
@@ -51,5 +54,15 @@ public class ReviewServiceImpl implements ReviewService {
         ReviewView review = modelMapper.map(newReview, ReviewView.class);
         review.setWriterUsername(writer.getUsername());
         return review;
+    }
+
+    @Override
+    public List<ReviewView> getAllReviewsByProductId(Long productId) {
+
+
+        return reviewRepository.findAllByProduct_Id(productId)
+                .stream()
+                .map(reviewEntity -> modelMapper.map(reviewEntity, ReviewView.class))
+                .collect(Collectors.toList());
     }
 }

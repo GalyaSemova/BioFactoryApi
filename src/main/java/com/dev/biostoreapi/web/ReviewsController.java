@@ -2,6 +2,7 @@ package com.dev.biostoreapi.web;
 
 import com.dev.biostoreapi.exceptions.DuplicatedReviewException;
 import com.dev.biostoreapi.exceptions.ProductNotFoundException;
+import com.dev.biostoreapi.model.dto.ProductDTO;
 import com.dev.biostoreapi.model.dto.ReviewAddDTO;
 import com.dev.biostoreapi.model.entity.UserEntity;
 import com.dev.biostoreapi.model.views.ReviewView;
@@ -11,6 +12,7 @@ import com.dev.biostoreapi.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
@@ -18,6 +20,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -34,8 +37,8 @@ public class ReviewsController {
         this.productService = productService;
     }
 
-//TODO implement on fe
     @PostMapping ("/{id}/add")
+//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> addReview(
             @PathVariable("id") Long productId,
             @RequestBody @Valid ReviewAddDTO reviewAddDTO,
@@ -60,5 +63,12 @@ public class ReviewsController {
         } catch (ProductNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+//    TODO All reviews by product implement
+
+    @GetMapping("/{id}/all")
+    public ResponseEntity<List<ReviewView>> getAllReviewsByProduct(@PathVariable("id") Long productId) {
+        return ResponseEntity.ok(reviewService.getAllReviewsByProductId(productId));
     }
 }
